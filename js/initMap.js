@@ -1,5 +1,6 @@
 var map; //setup global map variable. It's global so it can be accessed within the initialization of the map app and the marker setup after PokeAPI loads.
-
+var infoText = []; //this array will be populated with infowindow text.
+var markers = []; //markers will house the actual markers
 function initMap() {
   //initiate new map and style it
   map = new google.maps.Map(document.getElementById('map'), {
@@ -128,7 +129,6 @@ function initMap() {
 
 function addMarkers(PokeArray) {
   //marker code
-  var markers = []; //markers will house the actual markers
   // put the names of locations in an array...
   var Places = ['Skirtz Lounge', 'Cock & Bull Public Haus', 'The Nines',
     'Ned Kelly\'s', 'Shenanigans Irish Pub', 'Hagermeister Park'
@@ -153,7 +153,7 @@ function addMarkers(PokeArray) {
     lng: -88.014529
   }];
 
-  var infoText = []; //this array will be populated with infowindow text.
+  
   Places.forEach(function(item, index) //iterate places and add infowindow text with populated pokemon array.
     {
       infoText.push(
@@ -180,6 +180,7 @@ function addMarkers(PokeArray) {
         id: index
       });
       markers.push(Marker);
+      
       google.maps.event.addListener(Marker, 'click', function() //on click provide bounce animation toggle
         {
           markers.forEach(function(item, indexer) {
@@ -196,15 +197,9 @@ function addMarkers(PokeArray) {
             Marker.setAnimation(google.maps.Animation.BOUNCE);
           }
         });
-      markers.forEach(function(item, index) {
-        var thisMarker = document.querySelector('[data-id="' + index +
-          '"]'); //setup dom links for map use.
-        google.maps.event.addDomListener(thisMarker, 'click', function(
-          ev) {
-          map.setCenter(markers[index].getPosition()); //center map on specified marker
-        });
-      });
+    
     });
+
   var bounds = new google.maps.LatLngBounds(); //on map load, set the bounds to view all markers.
   for (var i = 0; i < markers.length; i++) {
     bounds.extend(markers[i].getPosition());

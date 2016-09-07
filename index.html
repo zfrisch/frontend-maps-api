@@ -38,7 +38,7 @@
 	<!-- display map marker list -->
 	<div class="map-items">
 		<ul data-bind="foreach: places()" class="list-of-places">
-			<li class="mapLink" data-bind="text: $data.name, attr: { 'data-id': $index }"></li>
+			<li class="mapLink" data-bind="text: $data.name, attr: { 'data-id': $index }, click: $parent.centerMap"></li>
 		</ul>
 	</div>
 	</div>
