@@ -1,0 +1,54 @@
+<html>
+<head>
+	<!-- meta -->
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	
+	<!-- title -->
+	<title>Udacity Map API</title>
+	
+	<!-- links -->
+	<link rel="stylesheet" href="./css/style.css">
+	<link rel="stylesheet" href="./css/font-awesome.css">
+
+	<!-- scripts -->
+	<script src="./js/jquery31.js"></script>
+	<script src="./js/knockout.js"></script>
+	<script src="./js/initMap.js"></script>
+	<script src="./js/app.js"></script>
+	<script src="./js/pokeapi.js"></script>
+</head>
+<body>
+<!-- content -->
+<div class="container">
+	<!-- loading api header -->
+	<span class="loading-text" data-bind="visible: isapiLoading()"><h1>Loading<sup>Please Wait</sup></h1></span>
+	<!-- area for searching map markers -->
+	<i class="fa fa-2x toggleMenu" data-bind="click: toggleSideMenu, css: fawhatever" aria="true"></i>
+	<div class="side-menu" data-bind="visible: sideMenu();">
+	<div class="search-bar">
+		<!-- on input display search string and update map marker list on button press -->
+		<input class="search-bar" data-bind="textInput: searchString" type="text"><br><input type="checkbox" data-bind="checked: autoSearch">Auto Search
+		<span class="search-string" data-bind="text: searchString"></span>
+		<button class="search-button" data-bind="click: updatePlaces, visible: checkSearchBarVisibility">Search</button>
+		<br>
+		Number of Results: <span data-bind="text: resultString"></span>
+	</div>
+	<!-- display map marker list -->
+	<div class="map-items">
+		<ul data-bind="foreach: places()" class="list-of-places">
+			<li class="mapLink" data-bind="text: $data.name, attr: { 'data-id': $index }"></li>
+		</ul>
+	</div>
+	</div>
+	<!-- map display -->
+	<div id="map" class="google-map">
+		
+	</div>
+</div>
+<!-- end content -->
+<!-- get google map -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5N1smW9gIs_8ZwEQLSIM6Ud6TqLGrdXg&v=3&callback=initMap"></script>
+</body>
+</html>

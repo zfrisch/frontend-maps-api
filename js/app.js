@@ -1,0 +1,77 @@
+function appInit(cbfn, pokearray) {
+
+  var ViewModel = function() {
+    this.staticPlaces = {
+      "Places": [{
+        "name": "Skirtz Lounge",
+        "lat": 44.511119,
+        "lng": -87.998324
+      }, {
+        "name": "Cock & Bull Public Haus",
+        "lat": 44.511837,
+        "lng": -87.997935
+      }, {
+        "name": "The Nines",
+        "lat": 44.513576,
+        "lng": -88.016313
+      }, {
+        "name": "Ned Kelly's",
+        "lat": 44.516083,
+        "lng": -88.015227
+      }, {
+        "name": "Shenanigans Irish Pub",
+        "lat": 44.51126,
+        "lng": -87.996378
+      }, {
+        "name": "Hagermeister Park",
+        "lat": 44.517012,
+        "lng": -88.014529
+      }]
+    }
+    this.apiLoading = ko.observable(false);
+    this.isapiLoading = ko.pureComputed(function(data, event) {
+      return this.apiLoading();
+    }, this);
+    this.updateapiLoading = ko.pureComputed(function(data, event) {
+      this.apiLoading(!apiLoading());
+    }, this);
+    this.sideMenu = ko.observable(true);
+    this.toggleSideMenu = function() {
+      this.sideMenu(!this.sideMenu());
+    };
+    this.autoSearch = ko.observable(true);
+    this.fawhatever = ko.pureComputed(function(data, event) {
+      return this.sideMenu() ? 'fa-times' : 'fa-bars';
+    }, this);
+    this.sideMenuIcon = ko.observable(true);
+    this.updateSideMenuIcon = function() {
+      this.sideMenuIcon(!this.sideMenuIcon());
+    };
+    this.places = ko.observableArray(this.staticPlaces.Places.slice(0));
+    this.searchString = ko.observable('');
+    this.checkSearchBarVisibility = ko.computed(function() {
+      return !this.autoSearch();
+    }, this);
+    this.searchString.subscribe(function() {
+      if (this.autoSearch() != false) {
+        this.updatePlaces();
+      }
+    }, this);
+    this.resultString = ko.computed(function() {
+      return this.places().length;
+    }, this);
+    this.updatePlaces = function() {
+      var compiledArray = [];
+      for (var ind in this.staticPlaces.Places) {
+        var ss = this.searchString().toLowerCase();
+        if (this.staticPlaces.Places[ind].name.toLowerCase().indexOf(ss) !=
+          -1) {
+          compiledArray.push(this.staticPlaces.Places[ind]);
+        }
+      }
+      this.places(compiledArray);
+    };
+  }
+  ko.applyBindings(new ViewModel());
+  cbfn(pokearray);
+}
